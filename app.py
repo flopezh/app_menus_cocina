@@ -21,7 +21,8 @@ TENANT_ID = os.environ.get("TENANT_ID")
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 REDIRECT_PATH = "/getAToken"
 SCOPE = ["User.Read", "Mail.Send"]
-REDIRECT_URI = f"http://localhost:5000{REDIRECT_PATH}"
+#REDIRECT_URI = f"http://localhost:5000{REDIRECT_PATH}"
+REDIRECT_URI= f"https://app-menus-cocina.onrender.com/getAToken"
 
 def build_msal_app(cache=None):
     return msal.ConfidentialClientApplication(
