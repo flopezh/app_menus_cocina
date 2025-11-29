@@ -1,30 +1,79 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario</title>
+    <title>Formulario Menú Thompson</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 30px;
+            max-width: 700px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        input[readonly] {
+            background-color: #e9ecef;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Formulario</h1>
-    <form action="/formulario" method="POST">
-        <input type="text" name="campo1" placeholder="Campo 1" required><br>
-        <input type="text" name="campo2" placeholder="Campo 2" required><br>
-        <input type="text" name="campo3" placeholder="Campo 3" required><br>
-        <input type="text" name="campo4" placeholder="Campo 4" required><br>
-        <input type="text" name="campo5" placeholder="Campo 5" required><br>
-        <input type="text" name="campo6" placeholder="Campo 6" required><br>
-        <input type="text" name="fecha" id="fecha" readonly><br>
-        <button type="submit">Enviar</button>
+    <h1>MENÚ THOMPSON PARA EL DÍA {{ fecha_manana }}</h1>
+    <form method="post">
+        <label for="campo1">ENSALADAS</label>
+        <input type="text" id="campo1" name="ENSALADAS" maxlength="300" required>
+
+        <label for="campo2">PRIMERO</label>
+        <input type="text" id="campo2" name="PRIMERO" maxlength="300" required>
+
+        <label for="campo3">SEGUNDO</label>
+        <input type="text" id="campo3" name="SEGUNDO" maxlength="300" required>
+
+        <label for="campo4">GUARNICIÓN</label>
+        <input type="text" id="campo4" name="GUARNICION" maxlength="300" required>
+
+        <label for="campo5">EXTRA</label>
+        <input type="text" id="campo5" name="EXTRA" maxlength="300" required>
+
+        <label for="campo6">OBSERVACIONES</label>
+        <textarea id="campo6" name="OBSERVACIONES" rows="5" maxlength="700"></textarea>
+
+        <label for="fecha">Fecha:</label>
+        <input type="text" id="fecha" name="FECHA" value="{{ fecha_manana }}" readonly>
+
+        <input type="submit" value="Enviar menú">
     </form>
-
-    <br>
-    <a href="/logout"><button>Cerrar sesión</button></a>
-
-    <script>
-        const fechaInput = document.getElementById("fecha");
-        const mañana = new Date();
-        mañana.setDate(mañana.getDate() + 1);
-        fechaInput.value = mañana.toISOString().split('T')[0];
-    </script>
 </body>
 </html>
