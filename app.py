@@ -22,8 +22,7 @@ TENANT_ID = os.environ.get("TENANT_ID")
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 REDIRECT_PATH = "/getAToken"
 SCOPE = ["User.Read", "Mail.Send"]
-#REDIRECT_URI = f"http://localhost:5000{REDIRECT_PATH}"
-REDIRECT_URI= f"https://app-menus-cocina.onrender.com/getAToken"
+REDIRECT_URI = f"https://app-menus-cocina.onrender.com{REDIRECT_PATH}"
 
 def build_msal_app(cache=None):
     return msal.ConfidentialClientApplication(
@@ -34,9 +33,8 @@ def build_msal_app(cache=None):
     )
 
 def get_token_from_cache():
+    # Eliminamos uso de session["token_cache"] para evitar cookies grandes
     cache = msal.SerializableTokenCache()
-    if session.get("token_cache"):
-        cache.deserialize(session["token_cache"])
     cca = build_msal_app(cache)
     accounts = cca.get_accounts()
     if accounts:
@@ -50,16 +48,6 @@ def home():
     if not session.get("user"):
         return render_template("login.html")
     return redirect("/formulario")
-
-# @app.route("/login")
-# def login():
-#     session["state"] = str(uuid.uuid4())
-#     auth_url = build_msal_app().get_authorization_request_url(
-#         SCOPE,
-#         state=session["state"],
-#         redirect_uri=REDIRECT_URI
-#     )
-#     return redirect(auth_url)
 
 @app.route("/login")
 def login():
@@ -93,12 +81,11 @@ def authorized():
     if "access_token" in result:
         session["user"] = result.get("id_token_claims")
         session["access_token"] = result["access_token"]
-        session["token_cache"] = cache.serialize()
+        # 🔴 Esta línea causaba el error por exceso de tamaño → eliminada
+        # session["token_cache"] = cache.serialize()
         return redirect("/formulario")
     else:
         return "Error al obtener el token."
-
-from datetime import date, timedelta
 
 @app.route("/formulario", methods=["GET", "POST"])
 def formulario():
