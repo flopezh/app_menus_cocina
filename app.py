@@ -10,6 +10,7 @@ import uuid
 from flask import Flask, session, redirect, url_for, request, render_template
 import msal
 import requests
+from datetime import date, timedelta
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())  # Necesario para sesiones
@@ -51,14 +52,26 @@ def home():
         return render_template("login.html")
     return redirect("/formulario")
 
+# @app.route("/login")
+# def login():
+#     session["state"] = str(uuid.uuid4())
+#     auth_url = build_msal_app().get_authorization_request_url(
+#         SCOPE,
+#         state=session["state"],
+#         redirect_uri=REDIRECT_URI
+#     )
+#     return redirect(auth_url)
+
 @app.route("/login")
 def login():
+    print("==> Entrando a /login")
     session["state"] = str(uuid.uuid4())
     auth_url = build_msal_app().get_authorization_request_url(
         SCOPE,
         state=session["state"],
         redirect_uri=REDIRECT_URI
     )
+    print("==> URL generada:", auth_url)
     return redirect(auth_url)
 
 @app.route(REDIRECT_PATH)
@@ -86,13 +99,16 @@ def authorized():
     else:
         return "Error al obtener el token."
 
+from datetime import date, timedelta
+
 @app.route("/formulario", methods=["GET", "POST"])
 def formulario():
     if not session.get("access_token"):
         return redirect("/")
 
     if request.method == "GET":
-        return render_template("formulario.html")
+        fecha_manana = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+        return render_template("formulario.html", fecha_manana=fecha_manana)
 
     # POST: enviar correo
     data = request.form
