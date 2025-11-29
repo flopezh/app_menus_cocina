@@ -42,7 +42,6 @@ def get_token_from_cache():
     if accounts:
         result = cca.acquire_token_silent(SCOPE, account=accounts[0])
         if result:
-            session["token_cache"] = cache.serialize()
             return result
     return None
 
