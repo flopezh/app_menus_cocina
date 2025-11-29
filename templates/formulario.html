@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario</title>
+</head>
+<body>
+    <h1>Formulario</h1>
+    <form action="/formulario" method="POST">
+        <input type="text" name="campo1" placeholder="Campo 1" required><br>
+        <input type="text" name="campo2" placeholder="Campo 2" required><br>
+        <input type="text" name="campo3" placeholder="Campo 3" required><br>
+        <input type="text" name="campo4" placeholder="Campo 4" required><br>
+        <input type="text" name="campo5" placeholder="Campo 5" required><br>
+        <input type="text" name="campo6" placeholder="Campo 6" required><br>
+        <input type="text" name="fecha" id="fecha" readonly><br>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <br>
+    <a href="/logout"><button>Cerrar sesión</button></a>
+
+    <script>
+        const fechaInput = document.getElementById("fecha");
+        const mañana = new Date();
+        mañana.setDate(mañana.getDate() + 1);
+        fechaInput.value = mañana.toISOString().split('T')[0];
+    </script>
+</body>
+</html>
