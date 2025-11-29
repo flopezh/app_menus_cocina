@@ -98,7 +98,20 @@ def formulario():
 
     # POST: enviar correo
     data = request.form
-    cuerpo = "\n".join([f"{k}: {v}" for k, v in data.items()])
+    fecha = data.get("FECHA", "Sin fecha")
+
+    # Construimos el cuerpo en HTML
+    cuerpo = f"""
+    <h2>📝 Menú Thompson</h2>
+    <p><strong>Fecha:</strong> {fecha}</p>
+    <ul>
+    """
+
+    for k, v in data.items():
+        if k != "FECHA":  # Ya lo mostramos arriba
+            cuerpo += f"<li><strong>{k}:</strong> {v}</li>"
+    cuerpo += "</ul>"
+
     destinatario = os.environ.get("EMAIL_DESTINO")
 
     headers = {
@@ -109,7 +122,7 @@ def formulario():
     email_data = {
         "message": {
             "subject": "Formulario enviado",
-            "body": {"contentType": "Text", "content": cuerpo},
+            "body": {"contentType": "HTML", "content": cuerpo},
             "toRecipients": [{"emailAddress": {"address": destinatario}}],
         },
         "saveToSentItems": "true"
