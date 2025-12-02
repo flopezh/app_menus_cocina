@@ -108,19 +108,10 @@ def formulario():
     """
 
    # Diccionario para traducir los nombres de los campos
-    nombres_visibles = {
-        "campo1": "ENSALADAS",
-        "campo2": "PRIMERO",
-        "campo3": "SEGUNDO",
-        "campo4": "GUARNICIÓN",
-        "campo5": "EXTRA",
-        "campo6": "OBSERVACIONES"
-    }
-    
+
     for k, v in data.items():
-        if k != "FECHA":
-            nombre_mostrar = nombres_visibles.get(k, k)  # Usa el nombre bonito si existe
-            cuerpo += f"<li><strong>{nombre_mostrar}:</strong> {v}</li>"
+        if k != "FECHA": 
+            cuerpo += f"<li><strong>{k}:</strong> {v}</li>"
     
 
     destinatario = os.environ.get("EMAIL_DESTINO")
