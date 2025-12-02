@@ -100,19 +100,17 @@ def formulario():
     data = request.form
     fecha = data.get("FECHA", "Sin fecha")
 
-    # Construimos el cuerpo en HTML
     cuerpo = f"""
     <h2>📝 Menú Thompson</h2>
     <p><strong>Fecha:</strong> {fecha}</p>
     <ul>
     """
 
-   # Diccionario para traducir los nombres de los campos
-
     for k, v in data.items():
-        if k != "FECHA": 
+        if k != "FECHA":
             cuerpo += f"<li><strong>{k}:</strong> {v}</li>"
-    
+
+    # ... resto del código para enviar el correo ...
 
     destinatario = os.environ.get("EMAIL_DESTINO")
 
