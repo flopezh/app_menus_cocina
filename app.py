@@ -99,41 +99,45 @@ def formulario():
     # POST: enviar correo
     data = request.form
     fecha = data.get("FECHA", "Sin fecha")
-
+    
     cuerpo = f"""
     <h2>📝 Menú Thompson</h2>
     <p><strong>Fecha:</strong> {fecha}</p>
     <ul>
     """
-
+    
     for k, v in data.items():
         if k != "FECHA":
             cuerpo += f"<li><strong>{k}:</strong> {v}</li>"
-
-    # ... resto del código para enviar el correo ...
-
-    destinatario = os.environ.get("EMAIL_DESTINO")
-
+    cuerpo += "</ul>"
+    
+    # Leer múltiples destinatarios desde la variable de entorno
+    emails_str = os.environ.get("RECIPIENT_EMAILS", "")
+    email_list = [email.strip() for email in emails_str.split(",") if email.strip()]
+    
+    # Convertir a formato requerido por Microsoft Graph API
+    to_recipients = [{"emailAddress": {"address": email}} for email in email_list]
+    
     headers = {
         "Authorization": f"Bearer {session['access_token']}",
         "Content-Type": "application/json"
     }
-
+    
     email_data = {
         "message": {
             "subject": "Formulario enviado",
             "body": {"contentType": "HTML", "content": cuerpo},
-            "toRecipients": [{"emailAddress": {"address": destinatario}}],
+            "toRecipients": to_recipients,
         },
         "saveToSentItems": "true"
     }
-
+    
     response = requests.post(
         "https://graph.microsoft.com/v1.0/me/sendMail",
         headers=headers,
         json=email_data
     )
-
+    
     if response.status_code == 202:
         return "✅ Correo enviado correctamente."
     else:
