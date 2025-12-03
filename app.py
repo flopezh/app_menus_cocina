@@ -138,10 +138,14 @@ def formulario():
         json=email_data
     )
     
+    print("📨 Intentando enviar correo a:", email_list)
+    print("📨 Status:", response.status_code)
+    print("📨 Respuesta:", response.text)
+
     if response.status_code == 202:
         return "✅ Correo enviado correctamente."
     else:
-        return f"❌ Error al enviar correo: {response.text}"
+        return f"❌ Error al enviar correo:<br>{response.status_code}<br>{response.text}"
 
 @app.route("/logout")
 def logout():
