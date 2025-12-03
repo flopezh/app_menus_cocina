@@ -12,6 +12,7 @@ import msal
 import requests
 from datetime import date, timedelta
 
+
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())  # Necesario para sesiones
 
@@ -87,14 +88,18 @@ def authorized():
     else:
         return "Error al obtener el token."
 
+
+
 @app.route("/formulario", methods=["GET", "POST"])
 def formulario():
     if not session.get("access_token"):
         return redirect("/")
 
     if request.method == "GET":
+        # Preparamos fechas para el selector de calendario
+        fecha_hoy = date.today().strftime("%Y-%m-%d")
         fecha_manana = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
-        return render_template("formulario.html", fecha_manana=fecha_manana)
+        return render_template("formulario.html", fecha_manana=fecha_manana, fecha_hoy=fecha_hoy)
 
     # POST: enviar correo
     data = request.form
@@ -138,10 +143,6 @@ def formulario():
         json=email_data
     )
     
-    print("📨 Intentando enviar correo a:", email_list)
-    print("📨 Status:", response.status_code)
-    print("📨 Respuesta:", response.text)
-
     if response.status_code == 202:
         return "✅ Correo enviado correctamente."
     else:
