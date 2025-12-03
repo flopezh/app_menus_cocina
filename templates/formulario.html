@@ -20,7 +20,7 @@
             display: block;
             margin-top: 20px;
         }
-        input[type="text"], textarea {
+        input[type="text"], input[type="date"], textarea {
             width: 100%;
             padding: 10px;
             font-size: 16px;
@@ -51,6 +51,11 @@
 <body>
     <h1>MENÚ THOMPSON PARA EL DÍA {{ fecha_manana }}</h1>
     <form method="post">
+        <!-- Selector de fecha editable -->
+        <label for="fecha">Fecha del menú</label>
+        <input type="date" id="fecha" name="FECHA"
+               value="{{ fecha_manana }}" min="{{ fecha_hoy }}" required>
+
         <label for="campo1">ENSALADAS</label>
         <input type="text" id="campo1" name="ENSALADAS" maxlength="300" required>
 
@@ -68,9 +73,6 @@
 
         <label for="campo6">OBSERVACIONES</label>
         <textarea id="campo6" name="OBSERVACIONES" rows="5" maxlength="700"></textarea>
-
-  	<!-- Campo oculto con la fecha -->
-        <input type="hidden" name="FECHA" value="{{ fecha_manana }}">
 
         <input type="submit" value="Enviar menú">
     </form>
